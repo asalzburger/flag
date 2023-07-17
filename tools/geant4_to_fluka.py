@@ -20,12 +20,6 @@ extent = logical.extent(includeBoundingSolid=True)
 f = pyg4ometry.fluka.Flair(OUTPUT_FILE_INP,extent)
 f.write(OUTPUT_FILE_FLAIR)
 
-# EXPERIMENTAL
-# with open(OUTPUT_FILE_FLAIR, "r") as f:
-#     flairExtension = f.read()
-
-# with open(OUTPUT_FILE_INP, "r") as f:
-#     flukaText = f.read()
 import sys
 import pyg4ometry
 
@@ -43,6 +37,13 @@ freg = pyg4ometry.convert.geant4Reg2FlukaReg(reg)
 w = pyg4ometry.fluka.Writer()
 w.addDetector(freg)
 w.write(OUTPUT_FILE_INP)
+
+# EXPERIMENTAL
+# with open(OUTPUT_FILE_FLAIR, "r") as f:
+#     flairExtension = f.read()
+
+# with open(OUTPUT_FILE_INP, "r") as f:
+#     flukaText = f.read()
 
 # with open(OUTPUT_FILE_FLAIR, "w") as f:
 #     f.write(flukaText)
