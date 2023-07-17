@@ -31,7 +31,6 @@ def createMaterialPart():
     for line in text.split("\n"):
         materialResults = searchForMaterialOnLine(line)
         if len(materialResults) > 0:
-            print(line)
             materialNumber, materialId = getMaterialInfoFromLine(line)
             if materialNumber != -1:
                 material = findMaterialInDatabase(materialNumber)
@@ -65,7 +64,6 @@ def readFileText(filePath):
 def writeCompletedFile(textParts):
     with open(FLUKA_FILE, "w") as f:
         for part in textParts:
-            print(part)
             f.write(part)
             f.write("\n\n")
 
