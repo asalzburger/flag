@@ -1,3 +1,6 @@
+/.vscode
+/tools/__pycache__/
+
 test.root
 tools/test.py
 tree_name.C
