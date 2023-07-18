@@ -28,7 +28,6 @@ f.write(OUTPUT_FILE_FLAIR)
 with open(OUTPUT_FILE_FLAIR, "r") as f:
     flairText = f.read()
 flairTextHalves = flairText.split(OUTPUT_FILE_INP)
-print(flairTextHalves)
 correctedFlairText = "".join([flairTextHalves[0],
                               os.getcwd(),
                               "/",
@@ -36,4 +35,3 @@ correctedFlairText = "".join([flairTextHalves[0],
                               flairTextHalves[1]])
 with open(OUTPUT_FILE_FLAIR, "w") as f:
     f.write(correctedFlairText)
-print(correctedFlairText)
