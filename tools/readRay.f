@@ -12,10 +12,15 @@
 *     .................................................................
 *     here other possible declarations
 *     .................................................................
-       WRITE (*,*) ' File name?'
-       READ  (*,'(A80)') FILNAM
+      !  Ask the user for the name of the file
+      !  WRITE (*,*) ' File name?'
+      !  READ  (*,'(A80)') FILNAM
+      ! Predetermined file name
+       FILNAM = "fort.10"
        OPEN (FILE = FILNAM, UNIT = LUNRAY, STATUS = 'OLD', FORM =
      &     'UNFORMATTED')
+      write(*,*) "Eta distance X0"
+
 *     loop over several rays
     1 CONTINUE
 *     read info about ray starting point
@@ -119,7 +124,7 @@
 *       possible user code at the end of ray trajectory
 *       ...............................................................
 *       new ray
-      write(*,*) 'Eta, distance & X0:',etadir,rcmtot,alrtot
+      write(*,*) etadir,rcmtot,alrtot
       GO TO 1
  1000 CONTINUE
       WRITE(*,*) ' Incomplete data on file about ray starting point'

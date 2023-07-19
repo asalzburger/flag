@@ -24,7 +24,7 @@ f = pyg4ometry.fluka.Flair(OUTPUT_FILE_INP,extent)
 f.write(OUTPUT_FILE_FLAIR)
 
 # Correction of Flair input file path
-# TODO DISGUSTING. Make this part better or find a better way to do it?
+# TODO Find a better way to do this?
 with open(OUTPUT_FILE_FLAIR, "r") as f:
     flairText = f.read()
 flairTextHalves = flairText.split(OUTPUT_FILE_INP)

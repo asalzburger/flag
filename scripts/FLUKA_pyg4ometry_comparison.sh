@@ -9,9 +9,10 @@ cd tools
 gfortran readRay.f
 cd ..
 cd data/cylinder_fluka
-./../../tools/a.out
-# fort.10 | ./../../tools/a.out
+./../../tools/a.out | tee fortran_output.txt
 cd ../..
+python3 tools/fortran_output_to_csv.py
+
 
 # pyg4ometry
 # python $HOME/builds/acts/build/run/material_recording.py

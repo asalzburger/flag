@@ -45,7 +45,8 @@ def createMaterialRow(material, materialId):
     ident2 = float(material.Identifier_2)
     ident3 = float(material.Identifier_3)
     materialName = material.Name
-    return "LOW-MAT, {}, {}, {}, {}, , , {}\n".format(materialId, ident1, ident2, ident3, materialName)
+    materialRow = "LOW-MAT, {}, {}, {}, {}, , , {}\n".format(materialId, ident1, ident2, ident3, materialName)
+    return materialRow
 
 def findMaterialInDatabase(materialNumber):
     return MATERIALS[MATERIALS.Identifier_1 == materialNumber].iloc[0]
