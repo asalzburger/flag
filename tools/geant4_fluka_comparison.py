@@ -13,7 +13,6 @@ def main():
     plotPyg4ometryFluka()
     plotPyg4ometryUpRoot()
     plt.show()
-    # time.sleep(5)
 
 def plotPyg4ometryFluka():
     x0, eta = getFlukaPyg4ometryResults()
