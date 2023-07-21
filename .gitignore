@@ -8,6 +8,8 @@ tree_name.C
 /data
 /geant4_root_files/geant4_material_tracks.root
 
+/media
+
 /tools/a.out
 /tools/fluka_to_flair.py
 /tools/fluka_to_gdml.py

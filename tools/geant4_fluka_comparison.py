@@ -6,23 +6,25 @@ import numpy as np
 import uproot
 import seaborn as sns
 
-# FLUKA_PYG4OMETRY_RESULTS = "data/cylinder_fluka/fluka_cylinder_data.csv"
-FLUKA_PYG4OMETRY_RESULTS = "data/cylinder_fluka/pyg4ometry_cylinder_data.csv"
+GEANT4_RESULTS = "data/geant4_root_files/geant4_material_tracks.root"
+FLUKA_PYG4OMETRY_RESULTS = "data/cylinder_fluka/fluka_cylinder_data.csv"
+# FLUKA_PYG4OMETRY_RESULTS = "data/cylinder_fluka/pyg4ometry_cylinder_data.csv"
 
 def main():
-    plotPyg4ometryFluka()
-    plotPyg4ometryUpRoot()
+    plotFluka()
+    plotGeant4()
     plt.legend()
     plt.show()
 
-def plotPyg4ometryFluka():
+def plotFluka():
     x0, eta = getFlukaPyg4ometryResults()
     # flukaColor = "blue"
     # sns.regplot(x=eta, y=x0, x_bins=50, color=flukaColor, fit_reg=False)
-    plt.plot(eta, x0, label="Geant4 converted to FLUKA")
+    # plt.plot(eta, x0, label="Geant4 converted to FLUKA")
+    sns.regplot(x=eta, y=x0, x_bins=50, color="blue", fit_reg=False, label="Geant4 converted to FLUKA")
 
-def plotPyg4ometryUpRoot():
-    with uproot.open("data/geant4_root_files/geant4_material_tracks.root") as file:
+def plotGeant4():
+    with uproot.open(GEANT4_RESULTS) as file:
         x0 = np.array(file["material-tracks/t_X0"].array())
         eta = np.array(file["material-tracks/v_eta"].array())
     plt.rcParams["figure.autolayout"] = True
