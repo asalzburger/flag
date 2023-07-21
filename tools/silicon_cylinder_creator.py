@@ -4,8 +4,11 @@ import numpy as np
 VIEW_GEOMETRY = False
 OUTPUT_FILE_GDML = "data/cylinder_pyg4ometry/silicon_cylinder.gdml"
 OUTPUT_FILE_GMAD = "data/cylinder_pyg4ometry/silicon_cylinder.gmad"
-N_CYLINDERS = 5
 SPACE_LENGTH = 1000
+N_CYLINDERS = 5
+M_LAYERS = 4
+LAYER_THICKNESS = 1
+START_INNER_RADIUS = 44
 
 # Registry to store gdml data
 reg  = pyg4ometry.geant4.Registry()
@@ -31,11 +34,18 @@ if N_CYLINDERS > 1:
         centerCoordinate = N_CYLINDERS / 2 * cylinderLength + cylinderLength / 2
 
 # Place the cylinders
+cylLayerThickness = LAYER_THICKNESS
 for i in range(N_CYLINDERS):
     cylNumberStr = str(i + 1)
-    c   = pyg4ometry.geant4.solid.Tubs("solid_cylinder_{}".format(cylNumberStr),44,45,cylinderLength,0,2*np.pi,reg)
-    c_l = pyg4ometry.geant4.LogicalVolume(c,"G4_Si","logical_cylinder_{}".format(cylNumberStr),reg)
-    c_p = pyg4ometry.geant4.PhysicalVolume([0,0,0],[0,0,centerCoordinate],c_l,"physical_cylinder_{}".format(cylNumberStr),wl,reg)
+    layerIndex = 1
+    innerRadius = START_INNER_RADIUS
+    for j in range(M_LAYERS):
+        layerIndexStr = str(layerIndex)
+        c   = pyg4ometry.geant4.solid.Tubs("solid_cylinder_{}_{}".format(cylNumberStr, layerIndexStr),round(innerRadius, 1),round((innerRadius+1), 1),cylinderLength,0,2*np.pi,reg)
+        c_l = pyg4ometry.geant4.LogicalVolume(c,"G4_Si","logical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr),reg)
+        c_p = pyg4ometry.geant4.PhysicalVolume([0,0,0],[0,0,centerCoordinate],c_l,"physical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr),wl,reg)
+        layerIndex += 1
+        innerRadius += 1
     centerCoordinate -= cylinderLength
 
 # Visualise geometry
