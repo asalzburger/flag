@@ -6,15 +6,21 @@ OUTPUT_FILE_GDML = "data/cylinder_pyg4ometry/silicon_cylinder.gdml"
 OUTPUT_FILE_GMAD = "data/cylinder_pyg4ometry/silicon_cylinder.gmad"
 SPACE_LENGTH = 1000
 N_CYLINDERS = 5
-M_LAYERS = 4
+M_LAYERS = 16
 LAYER_THICKNESS = 1
 START_INNER_RADIUS = 44
+DEFAULT_SPACE_WIDTH_LENGTH = 100
 
 # Registry to store gdml data
 reg  = pyg4ometry.geant4.Registry()
 
 # world solid and logical
-ws   = pyg4ometry.geant4.solid.Box("solid_box",100,100,SPACE_LENGTH,reg)
+neededSpaceWidth = 2 * (START_INNER_RADIUS + M_LAYERS * LAYER_THICKNESS)
+if neededSpaceWidth > DEFAULT_SPACE_WIDTH_LENGTH:
+    spaceWidth = neededSpaceWidth + 10
+else:
+    spaceWidth = DEFAULT_SPACE_WIDTH_LENGTH
+ws   = pyg4ometry.geant4.solid.Box("solid_box",spaceWidth,spaceWidth,SPACE_LENGTH,reg)
 wl   = pyg4ometry.geant4.LogicalVolume(ws,"G4_Galactic","space_volume",reg)
 reg.setWorld(wl.name)
 
