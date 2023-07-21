@@ -11,6 +11,8 @@ M_LAYERS = 16
 LAYER_THICKNESS = 1
 START_INNER_RADIUS = 44
 DEFAULT_SPACE_WIDTH_LENGTH = 100
+# Innermost to outermost
+CYLINDER_MATERIALS = ["G4_Si", "G4_U", "G4_Au", "G4_Ag"]
 
 def main():
     cc = CylinderCreator()
@@ -51,9 +53,17 @@ class CylinderCreator:
         innerRadius = START_INNER_RADIUS
         for layer in range(M_LAYERS):
             layerIndexStr = str(layer + 1)
-            c   = pyg4ometry.geant4.solid.Tubs("solid_cylinder_{}_{}".format(cylNumberStr, layerIndexStr),round(innerRadius, 1),round((innerRadius+LAYER_THICKNESS), 1),cylinderLength,0,2*np.pi,self.reg)
-            c_l = pyg4ometry.geant4.LogicalVolume(c,"G4_Si","logical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr),self.reg)
-            c_p = pyg4ometry.geant4.PhysicalVolume([0,0,0],[0,0,centerCoordinate],c_l,"physical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr),self.wl,self.reg)
+            solidCylinderName = "solid_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
+            innerRadius = round(innerRadius, 1)
+            outerRadius = innerRadius + LAYER_THICKNESS
+            c   = pyg4ometry.geant4.solid.Tubs(solidCylinderName,innerRadius,outerRadius,cylinderLength,0,2*np.pi,self.reg)
+            
+            material = CYLINDER_MATERIALS[layer % len(CYLINDER_MATERIALS)]
+            logicalCylinderName = "logical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
+            c_l = pyg4ometry.geant4.LogicalVolume(c,material,logicalCylinderName,self.reg)
+
+            physicalCylinderName = "physical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
+            c_p = pyg4ometry.geant4.PhysicalVolume([0,0,0],[0,0,centerCoordinate],c_l,physicalCylinderName,self.wl,self.reg)
             layer += 1
             innerRadius += 1
 
