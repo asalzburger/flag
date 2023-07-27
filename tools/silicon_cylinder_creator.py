@@ -3,11 +3,11 @@ import pyg4ometry
 import numpy as np
 
 VIEW_GEOMETRY = False
-OUTPUT_FILE_GDML = "data/cylinder_pyg4ometry/silicon_cylinder.gdml"
-OUTPUT_FILE_GMAD = "data/cylinder_pyg4ometry/silicon_cylinder.gmad"
+OUTPUT_FILE_GDML = "data/cylinder_g4/silicon_cylinder.gdml"
+OUTPUT_FILE_GMAD = "data/cylinder_g4/silicon_cylinder.gmad"
 SPACE_LENGTH = 1000
-N_CYLINDERS = 5
-M_LAYERS = 16
+N_CYLINDERS = 10
+M_LAYERS = 6
 LAYER_THICKNESS = 1
 START_INNER_RADIUS = 44
 DEFAULT_SPACE_WIDTH_LENGTH = 100
@@ -70,10 +70,9 @@ class CylinderCreator:
     def determineSpaceInfo(self):
         cylinderLength = SPACE_LENGTH / N_CYLINDERS
         if N_CYLINDERS > 1:
-            if N_CYLINDERS % 2 == 1:
-                startCenterCoordinate = (N_CYLINDERS - 1) / 2 * cylinderLength
-            else:
-                startCenterCoordinate = N_CYLINDERS / 2 * cylinderLength + cylinderLength / 2
+            startCenterCoordinate = (N_CYLINDERS - 1) / 2 * cylinderLength
+        else:
+            startCenterCoordinate = 0.0
         return (startCenterCoordinate, cylinderLength)
 
     def visualizeGeometry(self):

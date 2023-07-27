@@ -2,6 +2,7 @@ import sys
 import os
 import pyg4ometry
 
+DEFAULT_G4_INPUT_FILE = "data/cylinder_g4/silicon_cylinder.gdml"
 OUTPUT_FILE_INP = "data/cylinder_fluka/silicon_cylinder.inp"
 OUTPUT_FILE_FLAIR = "data/cylinder_fluka/silicon_cylinder.flair"
 
@@ -9,8 +10,9 @@ OUTPUT_FILE_FLAIR = "data/cylinder_fluka/silicon_cylinder.flair"
 try:
     reader = pyg4ometry.gdml.Reader(sys.argv[1])
 except:
-    print("Please provide a pyg4ometry file for conversion.")
-    sys.exit(0)
+    print(" ".join(["Using default input file", DEFAULT_G4_INPUT_FILE]))
+    reader = pyg4ometry.gdml.Reader(DEFAULT_G4_INPUT_FILE)
+
 reg = reader.getRegistry()
 logical = reg.getWorldVolume()
 freg = pyg4ometry.convert.geant4Reg2FlukaReg(reg)

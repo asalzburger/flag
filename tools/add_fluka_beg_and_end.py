@@ -3,8 +3,11 @@ import pandas as pd
 import re
 
 BEG_FILE = "data/cylinder_fluka/fluka_beg.txt"
-FLUKA_FILE = "data/cylinder_fluka/silicon_cylinder.inp"
-GEOMETRY_ADDITIONS = "data/cylinder_fluka/geometry_additions.txt"
+try:
+    FLUKA_FILE = sys.argv[1]
+except:
+    FLUKA_FILE = "data/cylinder_fluka/silicon_cylinder.inp"
+    print("".join(["Using default FLUKA file", FLUKA_FILE]))
 END_FILE = "data/cylinder_fluka/fluka_end.txt"
 FILES_FIRST_HALF = [BEG_FILE, FLUKA_FILE]
 FILES_SECOND_HALF = [END_FILE]
