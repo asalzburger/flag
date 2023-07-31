@@ -6,8 +6,8 @@ VIEW_GEOMETRY = False
 OUTPUT_FILE_GDML = "data/cylinder_g4/silicon_cylinder.gdml"
 OUTPUT_FILE_GMAD = "data/cylinder_g4/silicon_cylinder.gmad"
 SPACE_LENGTH = 1000
-N_CYLINDERS = 10
-M_LAYERS = 6
+N_CYLINDERS = 7
+M_LAYERS = 1
 LAYER_THICKNESS = 1
 START_INNER_RADIUS = 44
 DEFAULT_SPACE_WIDTH_LENGTH = 100
@@ -33,7 +33,7 @@ class CylinderCreator:
         self.reg = pyg4ometry.geant4.Registry()
         # world solid and logical
         neededSpaceWidth = 2 * (START_INNER_RADIUS + M_LAYERS * LAYER_THICKNESS)
-        if neededSpaceWidth > DEFAULT_SPACE_WIDTH_LENGTH:
+        if neededSpaceWidth >= DEFAULT_SPACE_WIDTH_LENGTH:
             spaceWidth = neededSpaceWidth + 10
         else:
             spaceWidth = DEFAULT_SPACE_WIDTH_LENGTH
@@ -54,9 +54,9 @@ class CylinderCreator:
         for layer in range(M_LAYERS):
             layerIndexStr = str(layer + 1)
             solidCylinderName = "solid_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
-            innerRadius = round(innerRadius, 1)
-            outerRadius = innerRadius + LAYER_THICKNESS
-            c   = pyg4ometry.geant4.solid.Tubs(solidCylinderName,innerRadius,outerRadius,cylinderLength,0,2*np.pi,self.reg)
+            innerRadius = round(innerRadius + 0.1, 1)
+            outerRadius = round(innerRadius + LAYER_THICKNESS, 1)
+            c   = pyg4ometry.geant4.solid.Tubs(solidCylinderName,innerRadius,outerRadius,cylinderLength-0.05,0,2*np.pi,self.reg)
             
             material = CYLINDER_MATERIALS[layer % len(CYLINDER_MATERIALS)]
             logicalCylinderName = "logical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)

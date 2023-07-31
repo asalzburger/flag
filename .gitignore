@@ -6,6 +6,7 @@ tools/test.py
 tree_name.C
 
 /data
+/debugging
 /geant4_root_files/geant4_material_tracks.root
 
 /media
@@ -15,8 +16,8 @@ tree_name.C
 /tools/fluka_to_gdml.py
 /tools/root_results_to_csv.py
 
+/scripts/personal_startup_script.sh
 /scripts/test.sh
 
 fluka_geant4_comparison_conversion.png
 fluka_geant4_comparison.png
-personal_startup_script.sh
