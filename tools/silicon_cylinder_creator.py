@@ -2,12 +2,15 @@ import sys
 import pyg4ometry
 import numpy as np
 
-VIEW_GEOMETRY = False
+VIEW_GEOMETRY = True
 OUTPUT_FILE_GDML = "data/cylinder_g4/silicon_cylinder.gdml"
 OUTPUT_FILE_GMAD = "data/cylinder_g4/silicon_cylinder.gmad"
 SPACE_LENGTH = 1000
-N_CYLINDERS = 7
-M_LAYERS = 1
+N_CYLINDERS = 1
+M_LAYERS = 4
+S_SEGMENTS = 3
+RAW_SEGMENT_ANGLE = np.pi * 2 / S_SEGMENTS
+ACTUAL_SEGMENT_ANGLE = RAW_SEGMENT_ANGLE - 0.005 * np.pi
 LAYER_THICKNESS = 1
 START_INNER_RADIUS = 44
 DEFAULT_SPACE_WIDTH_LENGTH = 100
@@ -53,17 +56,21 @@ class CylinderCreator:
         innerRadius = START_INNER_RADIUS
         for layer in range(M_LAYERS):
             layerIndexStr = str(layer + 1)
-            solidCylinderName = "solid_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
-            innerRadius = round(innerRadius + 0.1, 1)
+            innerRadius = round(innerRadius + 0.3, 1)
             outerRadius = round(innerRadius + LAYER_THICKNESS, 1)
-            c   = pyg4ometry.geant4.solid.Tubs(solidCylinderName,innerRadius,outerRadius,cylinderLength-0.05,0,2*np.pi,self.reg)
-            
-            material = CYLINDER_MATERIALS[layer % len(CYLINDER_MATERIALS)]
-            logicalCylinderName = "logical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
-            c_l = pyg4ometry.geant4.LogicalVolume(c,material,logicalCylinderName,self.reg)
+            for segment in range(S_SEGMENTS):
+                segmentIndexStr = str(segment + 1)
+                solidCylinderName = "solid_cylinder_{}_{}_{}".format(cylNumberStr, layerIndexStr, segmentIndexStr)
+                segmentStartAngle = RAW_SEGMENT_ANGLE * segment
 
-            physicalCylinderName = "physical_cylinder_{}_{}".format(cylNumberStr, layerIndexStr)
-            c_p = pyg4ometry.geant4.PhysicalVolume([0,0,0],[0,0,centerCoordinate],c_l,physicalCylinderName,self.wl,self.reg)
+                c   = pyg4ometry.geant4.solid.Tubs(solidCylinderName,innerRadius,outerRadius,cylinderLength-0.05,segmentStartAngle,ACTUAL_SEGMENT_ANGLE,self.reg)
+                
+                material = CYLINDER_MATERIALS[layer % len(CYLINDER_MATERIALS)]
+                logicalCylinderName = "logical_cylinder_{}_{}_{}".format(cylNumberStr, layerIndexStr, segmentIndexStr)
+                c_l = pyg4ometry.geant4.LogicalVolume(c,material,logicalCylinderName,self.reg)
+
+                physicalCylinderName = "physical_cylinder_{}_{}_{}".format(cylNumberStr, layerIndexStr, segmentIndexStr)
+                c_p = pyg4ometry.geant4.PhysicalVolume([0,0,0],[0,0,centerCoordinate],c_l,physicalCylinderName,self.wl,self.reg)
             layer += 1
             innerRadius += 1
 
