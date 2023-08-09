@@ -2,20 +2,25 @@ import sys
 import pyg4ometry
 import numpy as np
 
-VIEW_GEOMETRY = True
+VIEW_GEOMETRY = False
 OUTPUT_FILE_GDML = "data/cylinder_g4/silicon_cylinder.gdml"
 OUTPUT_FILE_GMAD = "data/cylinder_g4/silicon_cylinder.gmad"
 SPACE_LENGTH = 1000
 N_CYLINDERS = 1
-M_LAYERS = 4
-S_SEGMENTS = 3
+M_LAYERS = 1
+S_SEGMENTS = 1
 RAW_SEGMENT_ANGLE = np.pi * 2 / S_SEGMENTS
-ACTUAL_SEGMENT_ANGLE = RAW_SEGMENT_ANGLE - 0.005 * np.pi
+if S_SEGMENTS == 1:
+    ACTUAL_SEGMENT_ANGLE = RAW_SEGMENT_ANGLE
+else:
+    ACTUAL_SEGMENT_ANGLE = RAW_SEGMENT_ANGLE - 0.005 * np.pi
 LAYER_THICKNESS = 1
+SPACE_BETWEEN_LAYERS = 0.3
 START_INNER_RADIUS = 44
 DEFAULT_SPACE_WIDTH_LENGTH = 100
 # Innermost to outermost
-CYLINDER_MATERIALS = ["G4_Si", "G4_U", "G4_Au", "G4_Ag"]
+# CYLINDER_MATERIALS = ["G4_Si"]
+CYLINDER_MATERIALS = ["G4_Si", "G4_Li", "G4_Al", "G4_Ti"]
 
 def main():
     cc = CylinderCreator()
@@ -35,7 +40,7 @@ class CylinderCreator:
         # Registry to store gdml data
         self.reg = pyg4ometry.geant4.Registry()
         # world solid and logical
-        neededSpaceWidth = 2 * (START_INNER_RADIUS + M_LAYERS * LAYER_THICKNESS)
+        neededSpaceWidth = 2 * (START_INNER_RADIUS + M_LAYERS * LAYER_THICKNESS + (M_LAYERS - 1) * SPACE_BETWEEN_LAYERS)
         if neededSpaceWidth >= DEFAULT_SPACE_WIDTH_LENGTH:
             spaceWidth = neededSpaceWidth + 10
         else:
@@ -56,7 +61,7 @@ class CylinderCreator:
         innerRadius = START_INNER_RADIUS
         for layer in range(M_LAYERS):
             layerIndexStr = str(layer + 1)
-            innerRadius = round(innerRadius + 0.3, 1)
+            innerRadius = round(innerRadius + SPACE_BETWEEN_LAYERS, 1)
             outerRadius = round(innerRadius + LAYER_THICKNESS, 1)
             for segment in range(S_SEGMENTS):
                 segmentIndexStr = str(segment + 1)

@@ -30,6 +30,9 @@ cd ../..
 python3 tools/fortran_output_to_csv.py
 
 # pyg4ometry
+# export FLAG=$PWD
+# cd $HOME/builds/acts/build/run
 # python $HOME/builds/acts/build/run/material_recording.py
+# cd $FLAG
 python3 tools/geant4_fluka_comparison.py
 
