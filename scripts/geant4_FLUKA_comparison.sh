@@ -1,6 +1,9 @@
 # Use a Python virtual environment
 # source $VENV_DIR/bin/activate
 
+# Sets up the gitignored data directories used in the pipeline
+./scripts/directory_setup.sh
+
 python3 tools/silicon_cylinder_creator.py
 # python3 tools/copy_silicon_cylinder_creator.py
 
