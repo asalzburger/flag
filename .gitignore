@@ -8,6 +8,7 @@ tree_name.C
 !data/
 data/*
 !data/fluka_material_database
+!data/g4_material_database
 
 /debugging
 /geant4_root_files/geant4_material_tracks.root
